@@ -200,6 +200,9 @@ button {
       color: white;
     }
   }
+
+  &:disabled {
+  }
 }
 
 input,
@@ -330,4 +333,11 @@ dialog {
 .modal-leave-active {
   // transition: all 0.3s;
   animation: closeModal 0.5s;
+}
+
+.text-fail {
+  color: #bd0000;
+}
+.text-success {
+  color: #00bd00;
 }

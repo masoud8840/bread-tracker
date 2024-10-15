@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["nuxt-mdi"],
+  modules: ["nuxt-mdi", "@pinia/nuxt"],
+
   css: ["./assets/css/Styles.scss"],
   app: {
     head: {
@@ -22,6 +23,11 @@ export default defineNuxtConfig({
           href: "https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap",
         },
       ],
+    },
+  },
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.BASE_URL,
     },
   },
 });

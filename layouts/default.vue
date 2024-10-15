@@ -1,12 +1,14 @@
 <template>
   <header class="card">
     <nav class="container">
-      <button @click="toggleAuthModal(true)">ورود به حساب کاربری</button>
-      <section class="user-menu" v-if="false">
+      <button @click="toggleAuthModal(true)" v-if="!authStore.authorized">
+        ورود به حساب کاربری
+      </button>
+      <section class="user-menu" v-else>
         <MdiIcon icon="mdiAccountTie" size="52" />
         <section class="user-menu-detail">
-          <h3>مسعود قره داغی</h3>
-          <span>300,000 تومان</span>
+          <h3>{{ authStore.User.username }}</h3>
+          <span>{{ formatNum(authStore.User.balance) }} تومان</span>
         </section>
       </section>
     </nav>
@@ -35,6 +37,9 @@
                 name="password"
                 v-model="signupCredentials.password"
               />
+              <p :class="`text-${signupError.status}`">
+                {{ signupError.text }}
+              </p>
               <button type="submit">ثبت نام</button>
             </form>
           </section>
@@ -43,9 +48,20 @@
             <span> یا </span>
           </section>
           <section class="login-form">
-            <form>
-              <input type="email" placeholder="پست الکترونیکی" />
-              <input type="password" placeholder="رمز عبور" />
+            <form @submit.prevent="handleLogin">
+              <input
+                type="email"
+                placeholder="پست الکترونیکی"
+                v-model="loginCredentials.email"
+              />
+              <input
+                type="password"
+                placeholder="رمز عبور"
+                v-model="loginCredentials.password"
+              />
+              <p class="text-fail" v-if="loginError">
+                {{ loginError }}
+              </p>
               <button type="submit">ورود</button>
             </form>
           </section>
@@ -59,10 +75,20 @@
         <NuxtLink to="/" class="link link-primary">داشبورد</NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/admin" class="link link-primary">داشبورد</NuxtLink>
+        <NuxtLink
+          to="/admin"
+          class="link link-primary"
+          v-if="authStore.User.role === 'Admin'"
+          >مدیریت</NuxtLink
+        >
       </li>
       <li>
-        <NuxtLink to="/admin/users" class="link link-primary">کاربران</NuxtLink>
+        <NuxtLink
+          to="/admin/users"
+          class="link link-primary"
+          v-if="authStore.User.role === 'Admin'"
+          >کاربران</NuxtLink
+        >
       </li>
     </ul>
     <slot />
@@ -81,25 +107,36 @@ const clickOutside = (event: MouseEvent) => {
   }
 };
 
-interface ISignup {
-  username: string;
-  email: string;
-  password: string;
-}
-const signupCredentials = ref<ISignup>({
-  username: "",
-  email: "",
-  password: "",
+const loginCredentials = ref({
+  email: "gharedaghi.zip@gmail.com",
+  password: "Masood1379",
 });
-const handleSignup = async () => {
-  const signupRes = await $fetch("http://localhost:3000/api/v1/auth/signup", {
-    method: "POST",
-    body: signupCredentials,
-  });
+const loginError = ref("");
+const authStore = useAuthenticationStore();
+const handleLogin = async () => {
+  const { email, password } = loginCredentials.value;
+  const { message, statusCode } = await authStore.login(email, password);
+
+  loginError.value = "";
+  if (statusCode !== 200) loginError.value = message;
+  else isAuthModalOpen.value = false;
 };
 
-const adminSubmenuOpen = ref(false);
-const toggleOpenSubmenu = () => {
-  adminSubmenuOpen.value = !adminSubmenuOpen.value;
+const signupCredentials = ref({
+  username: "مسعود قره داغی",
+  email: "gharedaghi.zip@gmail.com",
+  password: "Masood1379",
+});
+const signupError = ref({
+  text: "",
+  status: "",
+});
+const handleSignup = async () => {
+  const { email, username, password } = signupCredentials.value;
+  const { status, message } = await authStore.signup(username, email, password);
+  signupError.value.text = message;
+  signupError.value.status = status;
 };
+
+const formatNum = (num: number) => num.toLocaleString("en-US");
 </script>
