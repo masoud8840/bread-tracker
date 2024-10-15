@@ -1,0 +1,333 @@
+@import "./Vazirmatn.scss";
+
+$primary: #001f3f;
+$grey: #a0b3c0;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: $primary;
+  font: 400 15px "Vazirmatn", sans-serif;
+}
+
+html {
+  background-color: #f4f4f4;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.view {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  column-gap: 30px;
+  align-items: start;
+
+  .right-menu {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+
+    a:not(.router-link-active) {
+      &:hover {
+        background-color: $grey;
+        color: white;
+        svg path {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+header {
+  margin-bottom: 50px;
+
+  nav {
+    button {
+      padding: 5px 10px;
+      border: 1px solid $grey;
+    }
+    .user-menu {
+      display: flex;
+      gap: 10px;
+      .user-menu-detail {
+        display: flex;
+        flex-direction: column;
+        h3 {
+          font-weight: 400;
+          color: $grey;
+        }
+
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+.home-view {
+  .bread-form {
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 0.3fr;
+    column-gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  button {
+    margin-left: auto;
+    border: 1px solid $grey;
+    padding: 5px 10px;
+    margin-top: 15px;
+  }
+
+  .list-container {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+
+    .list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      row-gap: 15px;
+
+      h3 {
+        color: $grey;
+        font-weight: 600;
+        font-size: 18px;
+      }
+      .list-item {
+        border: 1px solid $grey;
+        padding: 5px 15px;
+        border-radius: 3px;
+
+        p {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
+
+.admin-users-view {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+// UserCard component
+.user-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .user_card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .user_card-icon {
+    background-color: rgba($color: $grey, $alpha: 0.1);
+    padding: 10px;
+    border-radius: 50px;
+    path {
+      fill: $grey;
+    }
+  }
+  .user_card-username {
+    font-size: 18px;
+    line-height: 33px;
+  }
+  .user_card-role {
+    padding: 3px 10px;
+    background-color: rgba($color: $grey, $alpha: 0.1);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 2px;
+    text-transform: capitalize;
+    color: $grey;
+  }
+  .user_card-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    h4 {
+      font-size: 16px;
+      line-height: 24px;
+      color: $grey;
+    }
+    .user_card-info_box {
+      display: flex;
+      align-items: center;
+      column-gap: 5px;
+    }
+    svg path {
+      fill: $grey;
+    }
+  }
+}
+// GLOBAL
+.card {
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 8px 14px #e8f0f5;
+}
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: $grey;
+  cursor: pointer;
+  outline: none;
+  svg path {
+    color: $grey;
+  }
+
+  &:hover {
+    background-color: $grey;
+    color: white;
+    svg path {
+      color: white;
+    }
+  }
+}
+
+input,
+select {
+  border: 1px solid $grey;
+  border-radius: 3px;
+  padding: 5px 15px;
+  outline: none;
+  &::placeholder {
+    color: $grey;
+  }
+  &:focus {
+    border: 1px solid $primary;
+  }
+}
+ul {
+  list-style-type: none;
+}
+.link {
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 10px 15px;
+  border-radius: 2px;
+}
+
+.router-link-active {
+  background-color: rgba($color: $grey, $alpha: 0.1);
+  color: $grey;
+  position: relative;
+  &::after {
+    content: "";
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background-color: $grey;
+    position: absolute;
+  }
+}
+
+dialog {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border: none;
+  background-color: transparent;
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .forms-container {
+    background-color: white;
+    display: flex;
+    border-radius: 6px;
+    column-gap: 30px;
+    padding: 30px;
+  }
+  .hr-container {
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 5px;
+      color: $grey;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    hr {
+      border: 1px solid rgba($color: $grey, $alpha: 0.25);
+      height: 100%;
+      border-radius: 2px;
+    }
+  }
+
+  .signup-form,
+  .login-form {
+    width: 100%;
+  }
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    justify-content: center;
+    padding: 30px;
+    // input {
+    //   width: 100%;
+    // }
+    button {
+      padding: 7px;
+    }
+  }
+}
+
+@keyframes openModal {
+  0% {
+    scale: 0;
+  }
+  80% {
+    scale: 1.05;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes closeModal {
+  0% {
+    scale: 1;
+  }
+  20% {
+    scale: 1.05;
+  }
+  100% {
+    scale: 0;
+  }
+}
+.modal-enter-active {
+  // transition: all 0.3s;
+  animation: openModal 0.5s;
+}
+.modal-leave-active {
+  // transition: all 0.3s;
+  animation: closeModal 0.5s;
+}
