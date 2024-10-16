@@ -3,7 +3,7 @@ const { verify } = require("jsonwebtoken");
 const User = require("../models/User.js");
 
 module.exports.getUsers = Async(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find().select("_id username email role balance createdAt");
   res.json({
     message: "",
     statusCode: 200,
@@ -18,7 +18,6 @@ module.exports.postBread = Async(async (req, res, next) => {
 
 module.exports.checkAdministration = Async((req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
-
   const tokenPayload = verify(token, process.env.HASH);
   if (tokenPayload && tokenPayload.role === "Admin") {
     req.user = tokenPayload;
