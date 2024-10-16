@@ -3,7 +3,7 @@ export interface IResponse {
   status: string;
   statusCode: number;
 }
-export interface User extends IResponse {
+export interface User {
   token: string;
   username: string;
   email: string;

@@ -1,14 +1,11 @@
 interface IStateShape {
   authorized: boolean;
-  User: {
-    username: string;
-    email: string;
-    role: "Admin" | "User";
-    balance: number;
-    token: string;
-  };
+  User: User;
 }
 
+interface ILoginResponse extends IResponse {
+  user: User;
+}
 import type { User, IResponse } from "../types/types";
 export const useAuthenticationStore = defineStore("authenticationStore", {
   state: (): IStateShape => ({
@@ -40,7 +37,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
 
     async login(email: string, password: string) {
       const config = useRuntimeConfig();
-      const res = await $fetch<Promise<User>>(
+      const res = await $fetch<Promise<ILoginResponse>>(
         `${config.public.baseURL}/auth/login`,
         {
           method: "POST",
@@ -50,12 +47,11 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
           },
         }
       );
-      console.log(res);
 
-      // if (res.statusCode === 200) {
-      //   this.User = { ...res };
-      //   this.authorized = true;
-      // }
+      if (res.statusCode === 200) {
+        this.User = res.user;
+        this.authorized = true;
+      }
       return res;
     },
   },
