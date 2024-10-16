@@ -1,4 +1,3 @@
-const createError = require("../utils/createError.js");
 const Async = require("../utils/Async.js");
 const User = require("../models/User.js");
 const { hash, compare } = require("bcrypt");
@@ -71,21 +70,23 @@ module.exports.postLogin = Async(async (req, res, next) => {
         message: "با موفقیت وارد حساب کاربری خود شدید.",
         status: "success",
         statusCode: 200,
-        token: `Bearer ${token}`,
-        email,
-        username,
-        balance,
-        role,
+        user: {
+          email,
+          username,
+          balance,
+          role,
+          token: `Bearer ${token}`,
+        },
       });
     }
-    return res.json({
+    return res.status(400).json({
       message: "پست الکترونیکی یا رمز عبور اشتباه است!",
       status: "fail",
       statusCode: 400,
     });
   }
 
-  res.json({
+  res.status(400).json({
     message: "کاربری با این پست الکترونیکی و رمز عبور یافت نشد!",
     status: "fail",
     statusCode: 400,
