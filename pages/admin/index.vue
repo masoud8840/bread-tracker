@@ -1,15 +1,8 @@
 <script lang="ts" setup>
+import { formatDate, formatNumber } from "../../utils/utils";
 useHead({
-  title: "Home | Bread Tracker",
+  title: "نانوایی | مدیریت",
 });
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString("fa-IR", {
-    day: "numeric",
-    weekday: "long",
-    month: "long",
-  });
-const formatNumber = (num: number) => Number(num).toLocaleString("en-US");
 
 enum EBreadTypes {
   Sangak = "سنگک",

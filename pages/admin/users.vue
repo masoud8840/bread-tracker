@@ -1,11 +1,22 @@
 <script lang="ts" setup>
 useHead({
-  title: "مدیریت کاربران | نانوایی",
+  title: "نانوایی | کاربران",
 });
+
+const adminStore = useAdminStore();
+
+const users = await adminStore.getUsers();
 </script>
 
 <template>
   <section class="admin-users-view">
-    <UserCard v-for="i in 4" />
+    <Suspense>
+      <template #default>
+        <UserCard v-for="(user, index) in users" :key="index" :user="user" />
+      </template>
+      <template #fallback>
+        <h1>Loading...</h1>
+      </template>
+    </Suspense>
   </section>
 </template>

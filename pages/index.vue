@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 useHead({
-  title: "خانه | نانوایی",
+  title: "نانوایی | خانه",
 });
 </script>
 
