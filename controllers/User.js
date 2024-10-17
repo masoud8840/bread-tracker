@@ -3,8 +3,6 @@ const User = require("../models/User.js");
 const { hash, compare } = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const crypto = require("crypto");
-
 module.exports.postSignup = Async(async (req, res, next) => {
   const username = req.body.username;
   const email = req.body.email;
@@ -88,6 +86,36 @@ module.exports.postLogin = Async(async (req, res, next) => {
 
   res.status(400).json({
     message: "کاربری با این پست الکترونیکی و رمز عبور یافت نشد!",
+    status: "fail",
+    statusCode: 400,
+  });
+});
+
+module.exports.postCheckAuth = Async(async (req, res, next) => {
+  const token = req.body.token.split(" ")[1];
+
+  if (token.length > 0) {
+    const tokenPayload = jwt.verify(token, process.env.HASH);
+
+    const { username, balance, role, email } = await User.findOne({
+      email: tokenPayload.email,
+    }).select("username email balance role");
+
+    return res.status(200).json({
+      message: "با موفقیت وارد حساب کاربری خود شدید.",
+      status: "success",
+      statusCode: 200,
+      user: {
+        email,
+        username,
+        balance,
+        role,
+      },
+    });
+  }
+
+  res.status(400).json({
+    message: "برای ورود به حساب کاربری دوباره تلاش کنید.",
     status: "fail",
     statusCode: 400,
   });
