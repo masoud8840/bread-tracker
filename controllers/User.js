@@ -52,13 +52,14 @@ module.exports.postLogin = Async(async (req, res, next) => {
     const doesPwMatch = await compare(pw, userPw);
 
     if (doesPwMatch) {
-      const { email, username, balance, role } = existingUser;
+      const { email, username, balance, role, _id } = existingUser;
       const token = jwt.sign(
         {
           email,
           username,
           balance,
           role,
+          _id,
         },
         process.env.HASH,
         { expiresIn: "1D" }
@@ -69,6 +70,7 @@ module.exports.postLogin = Async(async (req, res, next) => {
         status: "success",
         statusCode: 200,
         user: {
+          _id,
           email,
           username,
           balance,
@@ -97,15 +99,16 @@ module.exports.postCheckAuth = Async(async (req, res, next) => {
   if (token.length > 0) {
     const tokenPayload = jwt.verify(token, process.env.HASH);
 
-    const { username, balance, role, email } = await User.findOne({
+    const { username, balance, role, email, _id } = await User.findOne({
       email: tokenPayload.email,
-    }).select("username email balance role");
+    }).select("username email balance role _id");
 
     return res.status(200).json({
       message: "با موفقیت وارد حساب کاربری خود شدید.",
       status: "success",
       statusCode: 200,
       user: {
+        _id,
         email,
         username,
         balance,

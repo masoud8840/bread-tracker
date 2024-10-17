@@ -3,7 +3,9 @@ const { verify } = require("jsonwebtoken");
 const User = require("../models/User.js");
 
 module.exports.getUsers = Async(async (req, res, next) => {
-  const users = await User.find().select("_id username email role balance createdAt");
+  const users = await User.find().select(
+    "_id username email role balance createdAt"
+  );
   res.json({
     message: "",
     statusCode: 200,
@@ -23,7 +25,7 @@ module.exports.checkAdministration = Async((req, res, next) => {
     req.user = tokenPayload;
     next();
   } else
-    return res.json({
+    return res.status(400).json({
       message: "Access denied!",
       status: "fail",
       statusCode: 401,
