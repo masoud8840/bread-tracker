@@ -10,8 +10,8 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-const UserRoute = require("./routes/User.js");
-app.use("/api/v1/auth", UserRoute);
+const AuthRoute = require("./routes/Authentication.js");
+app.use("/api/v1/auth", AuthRoute);
 
 const AdminRoute = require("./routes/Admin.js");
 app.use("/api/v1/admin", AdminRoute);

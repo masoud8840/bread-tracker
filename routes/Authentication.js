@@ -6,7 +6,7 @@ const {
   postSignup,
   postLogin,
   postCheckAuth,
-} = require("../controllers/User.js");
+} = require("../controllers/Authentication.js");
 router
   .post("/signup", postSignup)
   .post("/login", postLogin)

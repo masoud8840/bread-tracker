@@ -8,7 +8,7 @@ const {
   postBread,
 } = require("../controllers/Admin.js");
 
-router.get("/users", [checkAdministration, getUsers]).get("users/:_id");
+router.get("/users", [checkAdministration, getUsers]);
 router.post("/bread", [checkAdministration, postBread]);
 
 module.exports = router;
