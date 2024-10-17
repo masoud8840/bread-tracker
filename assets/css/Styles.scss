@@ -47,6 +47,9 @@ html {
 header {
   margin-bottom: 50px;
 
+  min-height: 100px;
+  display: flex;
+  align-items: center;
   nav {
     button {
       padding: 5px 10px;

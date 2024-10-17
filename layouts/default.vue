@@ -1,17 +1,19 @@
 <template>
   <header class="card">
-    <nav class="container">
-      <button @click="toggleAuthModal(true)" v-if="!authStore.authorized">
-        ورود به حساب کاربری
-      </button>
-      <section class="user-menu" v-else>
-        <MdiIcon icon="mdiAccountTie" size="52" />
-        <section class="user-menu-detail">
-          <h3>{{ authStore.User.username }}</h3>
-          <span>{{ formatNum(authStore.User.balance) }} تومان</span>
+    <ClientOnly>
+      <nav class="container">
+        <button @click="toggleAuthModal(true)" v-if="!authStore.authorized">
+          ورود به حساب کاربری
+        </button>
+        <section class="user-menu" v-else>
+          <MdiIcon icon="mdiAccountTie" size="52" />
+          <section class="user-menu-detail">
+            <h3>{{ authStore.getUser.username }}</h3>
+            <span>{{ formatNum(authStore.getUser.balance) }} تومان</span>
+          </section>
         </section>
-      </section>
-    </nav>
+      </nav>
+    </ClientOnly>
   </header>
 
   <Teleport to="#teleports">
@@ -139,4 +141,5 @@ const handleSignup = async () => {
 };
 
 const formatNum = (num: number) => num.toLocaleString("en-US");
+authStore.checkLogin();
 </script>
