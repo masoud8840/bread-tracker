@@ -98,6 +98,8 @@
 </template>
 
 <script setup lang="ts">
+navigateTo("/");
+
 const isAuthModalOpen = ref(false);
 const toggleAuthModal = (value: boolean) => {
   isAuthModalOpen.value = value;
@@ -141,5 +143,4 @@ const handleSignup = async () => {
 };
 
 const formatNum = (num: number) => num.toLocaleString("en-US");
-authStore.checkLogin();
 </script>

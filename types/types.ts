@@ -10,12 +10,15 @@ export interface IUser {
   email: string;
   role: "Admin" | "User";
   balance: number;
+  negativeToday: number;
+  negativeTotal: number;
 }
 
 export interface IBread {
   type: EBreadTypes;
   qty: number;
   date: string;
+  total: number
 }
 
 export enum EBreadTypes {

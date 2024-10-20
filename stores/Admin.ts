@@ -34,6 +34,7 @@ export const useAdminStore = defineStore("adminStore", {
       const config = useRuntimeConfig();
       const authStore = useAuthenticationStore();
 
+      console.log("New Bread: ", newBread);
       const { bread } = await $fetch<IPostBreadResponse>(
         `${config.public.baseURL}/admin/bread`,
         {

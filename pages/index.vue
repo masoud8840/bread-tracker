@@ -2,8 +2,11 @@
 useHead({
   title: "نانوایی | خانه",
 });
+
+const authStore = useAuthenticationStore();
+authStore.checkLogin();
 </script>
 
 <template>
-  <h1><code>index.vue</code> Page</h1>
+  <pre>{{ authStore.User }}</pre>
 </template>

@@ -17,6 +17,8 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
       role: "User",
       balance: 0,
       token: "",
+      negativeToday: 0,
+      negativeTotal: 0,
     },
   }),
   getters: {
@@ -79,8 +81,6 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
           this.authorized = true;
           this.User = { ...res.user };
           this._loadToken();
-        } else {
-          navigateTo("/");
         }
       }
     },

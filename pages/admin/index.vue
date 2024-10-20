@@ -29,9 +29,8 @@ const retrieveBreads = async () => {
       (breadObj) => breadObj.date === bread.date
     );
     const { date, qty, type } = bread;
-    const text = `تعداد ${qty} نان ${type} به مبلغ ${calculateBreadPrice(
-      type,
-      qty
+    const text = `تعداد ${qty} نان ${type} به مبلغ ${formatNumber(
+      calculateBreadPrice(type, qty)!
     )} خریداری شد`;
 
     if (foundDate) {
@@ -48,17 +47,18 @@ const retrieveBreads = async () => {
 };
 function calculateBreadPrice(breadType: EBreadTypes, qty?: number) {
   if (breadType === EBreadTypes.Sangak)
-    return formatNumber((qty || breadAmount.value) * 5000);
+    return (qty || breadAmount.value) * 5000;
   if (breadType === EBreadTypes.Barbari)
-    return formatNumber((qty || breadAmount.value) * 7000);
+    return (qty || breadAmount.value) * 5000;
   if (breadType === EBreadTypes.Taftoon)
-    return formatNumber((qty || breadAmount.value) * 3000);
+    return (qty || breadAmount.value) * 1200;
 }
 const handleFormSumbition = async () => {
   await adminStore.postBread({
     date: formatDate(new Date()),
     qty: breadAmount.value,
     type: selectedBread.value,
+    total: Number(calculateBreadPrice(selectedBread.value, breadAmount.value)),
   });
   breadAmount.value = 0;
   await retrieveBreads();
