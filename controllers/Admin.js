@@ -16,10 +16,20 @@ module.exports.getUsers = Async(async (req, res, next) => {
 });
 
 module.exports.postBread = Async(async (req, res, next) => {
-  const { date, qty, type } = req.body;
+  const { date, qty, type, total } = req.body;
 
-  const newBread = new Bread({ qty, date, type });
+  const newBread = new Bread({ qty, date, type, total });
   await newBread.save();
+
+  const usersList = await User.find();
+  const pricePerUser = total / usersList.length;
+
+  usersList.map(async (user) => {
+    user.negativeToday = pricePerUser;
+    user.balance -= pricePerUser;
+    user.negativeTotal += pricePerUser;
+    await user.save();
+  });
 
   res.status(201).json({
     status: "success",

@@ -23,6 +23,14 @@ const UserSchema = new mongoose.Schema(
       enum: ["Admin", "User"],
       required: true,
     },
+    negativeToday: {
+      type: Number,
+      required: true,
+    },
+    negativeTotal: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
