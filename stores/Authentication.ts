@@ -1,16 +1,17 @@
 interface IStateShape {
   authorized: boolean;
-  User: User;
+  User: IUser;
 }
 
 interface ILoginResponse extends IResponse {
-  user: User;
+  user: IUser;
 }
-import type { User, IResponse } from "../types/types";
+import type { IUser, IResponse } from "../types/types";
 export const useAuthenticationStore = defineStore("authenticationStore", {
   state: (): IStateShape => ({
     authorized: false,
     User: {
+      _id: "",
       username: "",
       email: "",
       role: "User",
@@ -19,7 +20,7 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
     },
   }),
   getters: {
-    getUser(): User {
+    getUser(): IUser {
       return this.User;
     },
   },
@@ -65,7 +66,6 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
       this._loadToken();
       this.authorized = false;
       if (this.User.token.length > 0) {
-        this.authorized = true;
         const config = useRuntimeConfig();
         const res = await $fetch<Promise<ILoginResponse>>(
           `${config.public.baseURL}/auth/check`,
@@ -76,8 +76,11 @@ export const useAuthenticationStore = defineStore("authenticationStore", {
         );
 
         if (res.statusCode === 200) {
+          this.authorized = true;
           this.User = { ...res.user };
           this._loadToken();
+        } else {
+          navigateTo("/");
         }
       }
     },

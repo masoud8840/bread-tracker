@@ -1,14 +1,10 @@
 <script lang="ts" setup>
+import { EBreadTypes } from "../../types/types";
 import { formatDate, formatNumber } from "../../utils/utils";
 useHead({
   title: "نانوایی | مدیریت",
 });
 
-enum EBreadTypes {
-  Sangak = "سنگک",
-  Taftoon = "تافتون",
-  Barbari = "بربری",
-}
 const selectedBread = ref<EBreadTypes>(EBreadTypes.Sangak);
 const breadAmount = ref(0);
 
@@ -23,36 +19,51 @@ interface TBreadsTracked {
 }
 const breadsTracked = ref<TBreadsTracked[]>([]);
 
-const handleFormSumbition = () => {
-  function calculateBreadPrice(breadType: EBreadTypes) {
-    if (breadType === EBreadTypes.Sangak)
-      return formatNumber(breadAmount.value * 5000);
-    if (breadType === EBreadTypes.Barbari)
-      return formatNumber(breadAmount.value * 7000);
-    if (breadType === EBreadTypes.Taftoon)
-      return formatNumber(breadAmount.value * 3000);
-  }
+const adminStore = useAdminStore();
+const retrieveBreads = async () => {
+  breadsTracked.value = [];
 
-  const today = formatDate(new Date());
-  const foundDate = breadsTracked.value?.find((obj) => obj.date === today);
+  const breads = await adminStore.getBreads();
+  breads?.map((bread) => {
+    const foundDate = breadsTracked.value.find(
+      (breadObj) => breadObj.date === bread.date
+    );
+    const { date, qty, type } = bread;
+    const text = `تعداد ${qty} نان ${type} به مبلغ ${calculateBreadPrice(
+      type,
+      qty
+    )} خریداری شد`;
 
-  const text = `تعداد ${breadAmount.value} نان ${
-    selectedBread.value
-  } به مبلغ ${calculateBreadPrice(selectedBread.value)} تومان خریداری شد`;
+    if (foundDate) {
+      foundDate.history.push(text);
+    } else {
+      const newObj = {
+        date: formatDate(new Date()),
+        history: [text],
+      };
 
-  if (foundDate) {
-    foundDate.history.push(text);
-  } else {
-    const newObj = {
-      date: formatDate(new Date()),
-      history: [text],
-    };
-
-    breadsTracked.value.push(newObj);
-  }
-
-  breadAmount.value = 0;
+      breadsTracked.value.push(newObj);
+    }
+  });
 };
+function calculateBreadPrice(breadType: EBreadTypes, qty?: number) {
+  if (breadType === EBreadTypes.Sangak)
+    return formatNumber((qty || breadAmount.value) * 5000);
+  if (breadType === EBreadTypes.Barbari)
+    return formatNumber((qty || breadAmount.value) * 7000);
+  if (breadType === EBreadTypes.Taftoon)
+    return formatNumber((qty || breadAmount.value) * 3000);
+}
+const handleFormSumbition = async () => {
+  await adminStore.postBread({
+    date: formatDate(new Date()),
+    qty: breadAmount.value,
+    type: selectedBread.value,
+  });
+  breadAmount.value = 0;
+  await retrieveBreads();
+};
+await retrieveBreads();
 </script>
 
 <template>

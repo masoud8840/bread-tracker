@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: ["nuxt-mdi", "@pinia/nuxt"],
-
+  ssr: false,
   css: ["./assets/css/Styles.scss"],
   app: {
     head: {
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseURL: process.env.BASE_URL,
+      baseURL: import.meta.env.BASE_URL,
     },
   },
 });
