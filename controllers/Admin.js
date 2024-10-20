@@ -1,6 +1,7 @@
 const Async = require("../utils/Async");
 const { verify } = require("jsonwebtoken");
 const User = require("../models/User.js");
+const Bread = require("../models/Bread.js");
 
 module.exports.getUsers = Async(async (req, res, next) => {
   const users = await User.find().select(
@@ -15,7 +16,23 @@ module.exports.getUsers = Async(async (req, res, next) => {
 });
 
 module.exports.postBread = Async(async (req, res, next) => {
-  console.log(req.body);
+  const { date, qty, type } = req.body;
+
+  const newBread = new Bread({ qty, date, type });
+  await newBread.save();
+
+  res.status(201).json({
+    status: "success",
+    bread: newBread,
+  });
+});
+
+module.exports.getBread = Async(async (req, res, next) => {
+  const breads = await Bread.find();
+  res.status(201).json({
+    status: "success",
+    breads,
+  });
 });
 
 module.exports.checkAdministration = Async((req, res, next) => {
@@ -26,7 +43,7 @@ module.exports.checkAdministration = Async((req, res, next) => {
     next();
   } else
     return res.status(400).json({
-      message: "Access denied!",
+      message: "شما به اینجا دسترسی ندارید!",
       status: "fail",
       statusCode: 401,
     });

@@ -6,9 +6,12 @@ const {
   getUsers,
   checkAdministration,
   postBread,
+  getBread,
 } = require("../controllers/Admin.js");
 
 router.get("/users", [checkAdministration, getUsers]);
-router.post("/bread", [checkAdministration, postBread]);
+router
+  .post("/bread", [checkAdministration, postBread])
+  .get("/bread", [checkAdministration, getBread]);
 
 module.exports = router;
