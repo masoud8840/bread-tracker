@@ -75,6 +75,25 @@ header {
 }
 
 .home-view {
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 30px;
+
+    li section {
+      h4 {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+      }
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.admin-view {
   .bread-form {
     border-radius: 4px;
     display: grid;

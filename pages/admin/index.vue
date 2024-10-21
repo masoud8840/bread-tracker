@@ -37,7 +37,7 @@ const retrieveBreads = async () => {
       foundDate.history.push(text);
     } else {
       const newObj = {
-        date: formatDate(new Date()),
+        date: date,
         history: [text],
       };
 
@@ -67,7 +67,7 @@ await retrieveBreads();
 </script>
 
 <template>
-  <main class="home-view">
+  <main class="admin-view">
     <section class="container card">
       <form class="bread-form" @submit.prevent="handleFormSumbition">
         <input
